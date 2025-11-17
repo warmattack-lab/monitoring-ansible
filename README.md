@@ -30,6 +30,11 @@ ansible-playbook -i inventory/hosts.ini playbooks/deploy-monitoring.yml
 - Prometheus: `http://<monitoring 노드 IP>:9090`
 - Grafana: `http://<monitoring 노드 IP>:3000`
 
+| 서비스 | 기본 포트 | 비고 |
+| --- | --- | --- |
+| Prometheus | 9090 | 메트릭 수집/탐색 |
+| Grafana | 3000 | 사전 등록된 Node Exporter Full 대시보드 포함 |
+
 > 💡 **대시보드**: Grafana에는 Node Exporter Full 대시보드가 provisioning으로 자동 등록됩니다.
 
 ---
