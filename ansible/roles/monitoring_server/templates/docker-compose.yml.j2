@@ -1,0 +1,34 @@
+services:
+  prometheus:
+    image: quay.io/prometheus/prometheus:latest
+    container_name: prometheus
+    network_mode: host
+    volumes:
+      - {{ monitoring_compose_dir }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - {{ prometheus_data_dir }}:/prometheus
+    restart: unless-stopped
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    network_mode: host
+    pid: host
+    volumes:
+      - "/:/host:ro,rslave"
+    command:
+      - '--path.rootfs=/host'
+    restart: unless-stopped
+
+  grafana:
+    image: quay.io/grafana/grafana:latest
+    container_name: grafana
+    network_mode: host
+    user: "472"
+    volumes:
+      - {{ grafana_data_dir }}:/var/lib/grafana
+      - {{ monitoring_compose_dir }}/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - {{ monitoring_compose_dir }}/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
+      - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
+    restart: unless-stopped

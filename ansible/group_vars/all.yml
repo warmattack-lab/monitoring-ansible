@@ -1,0 +1,7 @@
+prometheus_data_dir: "{{ hostvars[inventory_hostname].prometheus_data_dir | default('/data/prometheus') }}"
+grafana_data_dir: "{{ hostvars[inventory_hostname].grafana_data_dir   | default('/data/grafana') }}"
+monitoring_compose_dir: "{{ hostvars[inventory_hostname].monitoring_compose_dir | default('/app/monitoring') }}"
+
+grafana_admin_user: admin
+grafana_admin_password: admin
+prometheus_url: "http://localhost:9090"

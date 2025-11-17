@@ -1,0 +1,14 @@
+- name: Ensure node_exporter container is running
+  ansible.builtin.command: >
+    docker run -d --name node_exporter
+    --restart unless-stopped
+    --network host
+    --pid host
+    -v /:/host:ro,rslave
+    quay.io/prometheus/node-exporter:latest
+    --path.rootfs=/host
+  args:
+    warn: false
+  register: node_exporter_run
+  changed_when: "'Error response from daemon: Conflict' not in node_exporter_run.stderr"
+

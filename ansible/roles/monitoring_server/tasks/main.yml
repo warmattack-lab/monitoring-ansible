@@ -1,0 +1,44 @@
+- name: Create monitoring directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - "{{ prometheus_data_dir }}"
+    - "{{ grafana_data_dir }}"
+    - "{{ monitoring_compose_dir }}"
+    - "{{ monitoring_compose_dir }}/grafana/provisioning/datasources"
+    - "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards"
+
+- name: Deploy prometheus.yml
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "{{ monitoring_compose_dir }}/prometheus.yml"
+
+- name: Deploy Grafana datasource config
+  ansible.builtin.template:
+    src: datasource.yml.j2
+    dest: "{{ monitoring_compose_dir }}/grafana/provisioning/datasources/datasource.yml"
+
+- name: Deploy Grafana dashboards config
+  ansible.builtin.template:
+    src: dashboards.yml.j2
+    dest: "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards/dashboards.yml"
+
+- name: Copy Node Exporter Full dashboard
+  ansible.builtin.copy:
+    src: node-exporter-full.json
+    dest: "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards/node-exporter-full.json"
+
+- name: Deploy monitoring docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ monitoring_compose_dir }}/docker-compose.yml"
+
+- name: Start monitoring stack
+  ansible.builtin.command:
+    cmd: docker compose up -d
+    chdir: "{{ monitoring_compose_dir }}"
+  changed_when: false

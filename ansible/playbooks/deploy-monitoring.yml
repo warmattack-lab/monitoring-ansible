@@ -1,0 +1,11 @@
+- name: Deploy monitoring stack on monitoring server
+  hosts: monitoring_server
+  become: yes
+  roles:
+    - monitoring_server
+
+- name: Deploy node_exporter on all monitored nodes
+  hosts: monitored_nodes
+  become: yes
+  roles:
+    - node_exporter

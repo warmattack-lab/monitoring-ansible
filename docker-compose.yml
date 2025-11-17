@@ -1,0 +1,9 @@
+services:
+  ansible:
+    build: ./ansible-control
+    container_name: ansible-control
+    network_mode: host
+    tty: true
+    volumes:
+      - ./ansible:/workspace
+      - ~/.ssh:/root/.ssh:ro
