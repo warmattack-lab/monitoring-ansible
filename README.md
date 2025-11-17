@@ -7,10 +7,12 @@ Terraform 없이 Ansible로 Prometheus, Grafana 스택을 배포하는 프로젝
 
 > 📌 **사전 준비**: Ansible을 실행할 호스트에 Docker가 설치되어 있어야 합니다.
 
-### 1) 프로젝트 준비
+### 1) 컨테이너 이미지 준비
 ```bash
-tar xvf monitoring-ansible-project.tar.gz
-cd monitoring-ansible-project
+# ansible-control 이미지를 로컬에서 빌드
+docker build -t ansible-control:local .
+
+# docker-compose.yml 의 image 태그도 동일한 이름으로 맞춰둡니다.
 ```
 
 ### 2) Ansible 컨테이너 시작
