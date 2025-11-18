@@ -4,7 +4,7 @@ services:
     container_name: prometheus
     network_mode: host
     volumes:
-      - {{ monitoring_compose_dir }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - {{ monitoring_compose_dir }}/prometheus/provisioning/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - {{ prometheus_data_dir }}:/prometheus
     restart: unless-stopped
 
