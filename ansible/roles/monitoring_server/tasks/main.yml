@@ -3,9 +3,9 @@
   ansible.builtin.file:
     path: "{{ prometheus_data_dir }}"
     state: directory
-    owner: 65534
+  debug:
+    var: prometheus_url
     group: 65534
-    mode: '0755'
 
 - name: Create grafana data directory
   ansible.builtin.file:
@@ -13,7 +13,6 @@
     state: directory
     owner: 472
     group: 472
-    mode: '0755'
 
 - name: Create monitoring stack directories
   ansible.builtin.file:
@@ -26,7 +25,6 @@
     - "{{ monitoring_compose_dir }}"
     - "{{ monitoring_compose_dir }}/prometheus/provisioning"
     - "{{ monitoring_compose_dir }}/grafana/provisioning/datasources"
-    - "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards"
 
 - name: Deploy prometheus.yml
   ansible.builtin.template:
