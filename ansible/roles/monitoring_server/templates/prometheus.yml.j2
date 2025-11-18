@@ -17,3 +17,8 @@ scrape_configs:
         - '{{ hostvars[h].ansible_host | default(h) }}:{{ hostvars[h].node_exporter_port | default(9100) }}'
         {% endif %}
         {% endfor %}
+        {% for h in groups['monitored_nodes'] | default([]) %}
+        {% if h not in groups['monitoring_server'] | default([]) %}
+        - '{{ hostvars[h].ansible_host | default(h) }}:{{ hostvars[h].node_exporter_port | default(9100) }}'
+        {% endif %}
+        {% endfor %}
