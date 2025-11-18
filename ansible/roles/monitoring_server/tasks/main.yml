@@ -1,4 +1,21 @@
-- name: Create monitoring directories
+
+- name: Create prometheus data directory
+  ansible.builtin.file:
+    path: "{{ prometheus_data_dir }}"
+    state: directory
+    owner: 65534
+    group: 65534
+    mode: '0755'
+
+- name: Create grafana data directory
+  ansible.builtin.file:
+    path: "{{ grafana_data_dir }}"
+    state: directory
+    owner: 472
+    group: 472
+    mode: '0755'
+
+- name: Create monitoring stack directories
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -6,8 +23,6 @@
     group: root
     mode: '0755'
   loop:
-    - "{{ prometheus_data_dir }}"
-    - "{{ grafana_data_dir }}"
     - "{{ monitoring_compose_dir }}"
     - "{{ monitoring_compose_dir }}/prometheus/provisioning"
     - "{{ monitoring_compose_dir }}/grafana/provisioning/datasources"
