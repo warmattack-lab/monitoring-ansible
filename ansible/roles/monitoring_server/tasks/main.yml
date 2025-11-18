@@ -1,10 +1,13 @@
 
+- name: Show prometheus url
+  ansible.builtin.debug:
+    var: prometheus_url
+
 - name: Create prometheus data directory
   ansible.builtin.file:
     path: "{{ prometheus_data_dir }}"
     state: directory
-  debug:
-    var: prometheus_url
+    owner: 65534
     group: 65534
 
 - name: Create grafana data directory
