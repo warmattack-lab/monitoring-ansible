@@ -1,14 +1,14 @@
-- name: Ensure node_exporter container is running
-  ansible.builtin.command: >
-    docker run -d --name node_exporter
-    --restart unless-stopped
-    --network host
-    --pid host
-    -v /:/host:ro,rslave
-    quay.io/prometheus/node-exporter:latest
-    --path.rootfs=/host
-  args:
-    warn: false
-  register: node_exporter_run
-  changed_when: "'Error response from daemon: Conflict' not in node_exporter_run.stderr"
+ - name: Ensure node_exporter container is running
+   ansible.builtin.command: >
+     docker run -d --name node_exporter
+     --restart unless-stopped
+     --network host
+     --pid host
+     -v /:/host:ro,rslave
+     prom/node-exporter:latest
+     --path.rootfs=/host
+   register: node_exporter_run
+   changed_when: node_exporter_run.rc == 0
+   failed_when: node_exporter_run.rc != 0 and
+                "'Conflict' not in (node_exporter_run.stderr | default(''))"
 
