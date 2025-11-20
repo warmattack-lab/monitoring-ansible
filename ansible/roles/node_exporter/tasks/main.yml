@@ -5,7 +5,7 @@
      --network host
      --pid host
      -v /:/host:ro,rslave
-     prom/node-exporter:latest
+     {{ node_exporter_image }}
      --path.rootfs=/host
    register: node_exporter_run
    changed_when: node_exporter_run.rc == 0
