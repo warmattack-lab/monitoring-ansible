@@ -1,0 +1,28 @@
+---
+- name: Check if DCGM-Exporter is enabled
+  debug:
+    msg: "DCGM-Exporter is {{ 'enabled' if dcgm_exporter_enabled | bool else 'disabled' }} for {{ inventory_hostname }}"
+
+- name: Deploy DCGM-Exporter container
+  shell: |
+    docker run -d \
+      --name dcgm-exporter \
+      --gpus all \
+      --cap-add SYS_ADMIN \
+      --restart unless-stopped \
+      --network host \
+      {{ dcgm_exporter_image }}
+  when: dcgm_exporter_enabled | default(false) | bool
+  register: dcgm_result
+  changed_when: "'dcgm-exporter' in dcgm_result.stdout"
+  failed_when: 
+    - dcgm_result.rc != 0
+    - "'Conflict' not in dcgm_result.stderr"
+    - "'already in use' not in dcgm_result.stderr"
+
+- name: Show DCGM-Exporter deployment result
+  debug:
+    msg: "{{ dcgm_result.stdout if dcgm_result.stdout else dcgm_result.stderr }}"
+  when: 
+    - dcgm_exporter_enabled | default(false) | bool
+    - dcgm_result is defined

@@ -5,3 +5,8 @@ monitoring_compose_dir: "{{ hostvars[inventory_hostname].monitoring_compose_dir 
 grafana_admin_user: admin
 grafana_admin_password: admin
 prometheus_url: "http://{{ hostvars[groups['monitoring_server'][0]].ansible_host | default(hostvars[groups['monitoring_server'][0]].inventory_hostname | default('localhost')) }}:9090"
+
+# DCGM Exporter settings
+dcgm_exporter_enabled: "{{ hostvars[inventory_hostname].dcgm_exporter_enabled | default(false) }}"
+dcgm_exporter_port: 9400
+dcgm_exporter_image: "nvcr.io/nvidia/k8s/dcgm-exporter:4.4.2-4.7.0-ubuntu22.04"

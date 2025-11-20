@@ -16,3 +16,12 @@ scrape_configs:
         - '{{ hostvars[h].ansible_host | default(h) }}:{{ hostvars[h].node_exporter_port | default(9100) }}'
 {% endif %}
 {% endfor %}
+
+  - job_name: 'dcgm_exporter'
+    static_configs:
+      - targets:
+{% for h in groups['gpu_nodes'] | default([]) %}
+{% if hostvars[h].dcgm_exporter_enabled | default(false) | bool %}
+        - '{{ hostvars[h].ansible_host | default(h) }}:{{ hostvars[h].dcgm_exporter_port | default(9400) }}'
+{% endif %}
+{% endfor %}

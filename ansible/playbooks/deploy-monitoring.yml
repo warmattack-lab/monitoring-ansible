@@ -9,3 +9,9 @@
   become: yes
   roles:
     - node_exporter
+
+- name: Deploy DCGM-Exporter on GPU nodes
+  hosts: gpu_nodes
+  become: yes
+  roles:
+    - dcgm_exporter
