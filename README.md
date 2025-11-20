@@ -185,17 +185,27 @@ ansible-playbook -i inventory/hosts.ini playbooks/deploy-monitoring.yml --check 
 `ansible/inventory/group_vars/all.yml`에서 다음 변수를 수정할 수 있습니다:
 
 ```yaml
+# Prometheus settings
 prometheus_data_dir: "/data/prometheus"
-grafana_data_dir: "/data/grafana"
-monitoring_compose_dir: "/app/monitoring"
-grafana_admin_user: "admin"
-grafana_admin_password: "admin"
+prometheus_image: "prom/prometheus:latest"
 prometheus_url: "http://{{ hostvars[groups['monitoring_server'][0]].ansible_host }}:9090"
 
-# DCGM Exporter settings (GPU 모니터링)
+# Grafana settings
+grafana_admin_password: "admin"
+grafana_admin_user: "admin"
+grafana_data_dir: "/data/grafana"
+grafana_image: "grafana/grafana:latest"
+
+# Node Exporter settings
+node_exporter_image: "prom/node-exporter:latest"
+
+# DCGM Exporter settings
 dcgm_exporter_enabled: false  # 호스트별로 오버라이드 가능
-dcgm_exporter_port: 9400
 dcgm_exporter_image: "nvcr.io/nvidia/k8s/dcgm-exporter:4.4.2-4.7.0-ubuntu22.04"
+dcgm_exporter_port: 9400
+
+# Common settings
+monitoring_compose_dir: "/app/monitoring"
 ```
 
 ### 포트 변경
