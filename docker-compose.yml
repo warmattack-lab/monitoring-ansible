@@ -1,6 +1,6 @@
 services:
   ansible:
-    build: ./ansible-control
+    image: ansible-control:local
     container_name: ansible-control
     network_mode: host
     tty: true

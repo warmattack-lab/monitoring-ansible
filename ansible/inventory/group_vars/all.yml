@@ -4,4 +4,4 @@ monitoring_compose_dir: "{{ hostvars[inventory_hostname].monitoring_compose_dir 
 
 grafana_admin_user: admin
 grafana_admin_password: admin
-prometheus_url: "http://localhost:9090"
+prometheus_url: "http://{{ hostvars[groups['monitoring_server'][0]].ansible_host | default(hostvars[groups['monitoring_server'][0]].inventory_hostname | default('localhost')) }}:9090"
