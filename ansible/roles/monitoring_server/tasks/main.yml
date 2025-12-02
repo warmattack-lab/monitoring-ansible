@@ -45,14 +45,14 @@
     src: dashboards.yml.j2
     dest: "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards/dashboards.yml"
 
-- name: Copy Node Exporter Full dashboard
-  ansible.builtin.copy:
-    src: node-exporter-full.json
+- name: Deploy Node Exporter dashboard
+  ansible.builtin.template:
+    src: node-exporter-full.json.j2
     dest: "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards/node-exporter-full.json"
 
-- name: Copy DCGM Exporter dashboard
-  ansible.builtin.copy:
-    src: dcgm-exporter-dashboard.json
+- name: Deploy DCGM Exporter dashboard
+  ansible.builtin.template:
+    src: dcgm-exporter-dashboard.json.j2
     dest: "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards/dcgm-exporter-dashboard.json"
 
 - name: Deploy monitoring docker-compose.yml
