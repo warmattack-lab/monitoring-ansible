@@ -6,6 +6,7 @@ prometheus_url: "http://{{ hostvars[groups['monitoring_server'][0]].ansible_host
 # Grafana settings
 grafana_admin_password: admin
 grafana_admin_user: admin
+grafana_dashboard_folder: "DELL GB10 Monitoring"
 grafana_data_dir: "{{ hostvars[inventory_hostname].grafana_data_dir   | default('/data/grafana') }}"
 grafana_image: "grafana/grafana:latest"
 

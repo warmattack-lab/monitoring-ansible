@@ -28,6 +28,7 @@
     - "{{ monitoring_compose_dir }}"
     - "{{ monitoring_compose_dir }}/prometheus/provisioning"
     - "{{ monitoring_compose_dir }}/grafana/provisioning/datasources"
+    - "{{ monitoring_compose_dir }}/grafana/provisioning/dashboards"
 
 - name: Deploy prometheus.yml
   ansible.builtin.template:
