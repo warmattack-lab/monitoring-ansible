@@ -1,6 +1,19 @@
-# monitoring-ansible
+# 🖥️ monitoring-ansible
 
-Terraform 없이 Ansible로 Prometheus, Grafana, Node Exporter 스택을 배포하는 프로젝트입니다.
+> **Ansible 기반 모니터링 스택 자동 배포 프로젝트**  
+> Prometheus, Grafana, Node Exporter, DCGM Exporter를 활용한 시스템 및 GPU 모니터링 환경을 자동으로 구성합니다.
+
+## 📋 목차
+- [사용법 한눈에 보기](#-사용법-한눈에-보기)
+- [프로젝트 구조](#-프로젝트-구조)
+- [주요 기능](#-주요-기능)
+- [디버깅](#-디버깅)
+- [커스터마이징](#-커스터마이징)
+- [배포 내용](#-배포-내용)
+- [메트릭 정보](#-gb10이-실제로-수집하고-있는-메트릭-11개)
+- [Grafana 대시보드](#-grafana--dell-gb10-monitoring-dashboard)
+
+---
 
 ## 🚀 사용법 한눈에 보기
 아래 순서대로 실행하면 로컬에서 제공하는 ansible-control 컨테이너를 통해 모니터링 노드를 자동 구성할 수 있습니다.
