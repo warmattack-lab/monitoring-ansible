@@ -234,3 +234,95 @@ gpu1 ansible_host=10.0.0.21 dcgm_exporter_enabled=true dcgm_exporter_port=9401
 - **DCGM-Exporter**: NVIDIA GPU 메트릭 수집 (GPU 사용률, 메모리, 온도, 전력 등)
   - 요구사항: NVIDIA GPU, NVIDIA Driver, Docker with `--gpus` 지원
   - `dcgm_exporter_enabled=true`로 설정된 호스트에만 배포됨
+
+---
+
+## 📘 GB10이 실제로 수집하고 있는 메트릭 (11개)
+
+
+| No | Metric Name | Friendly Name | 설명 |
+|----|-------------|----------------|------|
+| 1 | **DCGM_FI_DEV_SM_CLOCK** | SM Clock Frequency | GPU SM(Core) 클럭 속도(MHz) |
+| 2 | **DCGM_FI_DEV_MEMORY_TEMP** | Memory Temperature | GPU 메모리 온도(°C), GB10은 0으로 표시될 수 있음 |
+| 3 | **DCGM_FI_DEV_GPU_TEMP** | GPU Temperature | GPU 칩 온도 |
+| 4 | **DCGM_FI_DEV_POWER_USAGE** | Power Usage | GPU 실시간 전력 사용량(W) |
+| 5 | **DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION** | Total Energy Consumption | GPU 부팅 이후 누적 에너지 사용량(mJ) |
+| 6 | **DCGM_FI_DEV_PCIE_REPLAY_COUNTER** | PCIe Replay Counter | PCIe 오류로 retry 발생한 횟수 (0이면 정상) |
+| 7 | **DCGM_FI_DEV_GPU_UTIL** | GPU Utilization | GPU 전체 사용률(%) |
+| 8 | **DCGM_FI_DEV_MEM_COPY_UTIL** | Memory Copy Utilization | GPU Memory Copy 엔진 사용률(%) |
+| 9 | **DCGM_FI_DEV_ENC_UTIL** | Encoder Utilization | NVENC 인코더 사용률(%) |
+| 10 | **DCGM_FI_DEV_DEC_UTIL** | Decoder Utilization | NVDEC 디코더 사용률(%) |
+| 11 | **DCGM_FI_DEV_VGPU_LICENSE_STATUS** | vGPU License Status | vGPU 라이선스 활성 여부 |
+
+---
+
+## ❌ GB10에서 현재 수집되지 않는 메트릭 (15개)
+
+| No | Metric Name | Friendly Name | 설명 |
+|----|-------------|----------------|------|
+| 1 | **DCGM_FI_DEV_MEM_CLOCK** | Memory Clock Frequency | GPU 메모리 클럭(MHz), NVML에서 미지원 |
+| 2 | **DCGM_FI_DEV_XID_ERRORS** | XID Error Code | GPU 오류 코드, 오류 발생 시에만 값 출력 |
+| 3 | **DCGM_FI_DEV_FB_FREE** | Framebuffer Free Memory | 사용 가능한 VRAM, GB10은 미지원 |
+| 4 | **DCGM_FI_DEV_FB_USED** | Framebuffer Used Memory | 사용 중 VRAM, GB10은 미지원 |
+| 5 | **DCGM_FI_DEV_FB_RESERVED** | Framebuffer Reserved Memory | 예약된 VRAM, GB10은 미지원 |
+| 6 | **DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL** | NVLink Total Bandwidth | GB10은 NVLink 하드웨어 없음 |
+| 7 | **DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS** | Uncorrectable Remapped Rows | 수정 불가 메모리 오류로 remap된 row 수, ECC 미지원 |
+| 8 | **DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS** | Correctable Remapped Rows | 수정 가능한 오류로 remap된 row 수, ECC 미지원 |
+| 9 | **DCGM_FI_DEV_ROW_REMAP_FAILURE** | Row Remap Failure | row remap 실패 여부, ECC 미지원 |
+| 10 | **DCGM_FI_DRIVER_VERSION** | Driver Version | GPU 드라이버 버전, DCGM 4.x에서 label 비활성 |
+| 11 | **DCGM_FI_PROF_GR_ENGINE_ACTIVE** | Graphics Engine Active Ratio | Graphics 엔진 활성 비율, Profiling 모듈 미활성 |
+| 12 | **DCGM_FI_PROF_PIPE_TENSOR_ACTIVE** | Tensor Core Active Ratio | Tensor/HMMA 파이프 활성 비율, Profiling 미지원 |
+| 13 | **DCGM_FI_PROF_DRAM_ACTIVE** | DRAM Active Ratio | DRAM 인터페이스 활성 비율, Profiling 미지원 |
+| 14 | **DCGM_FI_PROF_PCIE_TX_BYTES** | PCIe TX Rate | PCIe 전송 대역폭(Bytes/s), Profiling 기반 기능 비활성 |
+| 15 | **DCGM_FI_PROF_PCIE_RX_BYTES** | PCIe RX Rate | PCIe 수신 대역폭(Bytes/s), Profiling 기반 기능 비활성 |
+
+---
+
+## 📊 Grafana – DELL GB10 Monitoring Dashboard
+
+아래는 Grafana에서 GB10 시스템 및 GPU 모니터링 대시보드를 확인하는 순서입니다.
+
+---
+
+### **1. Grafana 접속 후 "DELL GB10 Monitoring" 선택**
+
+![Step 1 - Select Folder](./images/monitoring-1.png)
+
+---
+
+### **2. 시스템 모니터링 또는 GPU 모니터링 대시보드 선택**
+
+![Step 2 - Choose Dashboard](./images/monitoring-2.png)
+
+---
+
+### **3. 시스템 모니터링 대시보드 (System Monitoring Dashboard)**
+
+![Step 3 - System Dashboard](./images/monitoring-3.png)
+
+주요 정보:
+- CPU / Memory / Disk 사용률
+- 네트워크 트래픽
+- Load Average, Uptime
+- Processes, Timesync, Meminfo 등 상세 OS 메트릭
+
+---
+
+### **4. GPU 모니터링 대시보드 (NVIDIA GPU Monitoring Dashboard)**
+
+![Step 4 - GPU Dashboard](./images/monitoring-4.png)
+
+주요 정보:
+- GPU Temperature
+- GPU Power Usage
+- GPU SM Clock
+- GPU Utilization
+- Memory Copy/Encoder/Decoder Utilization
+
+---
+
+## ✔ 요약
+
+- **DELL GB10 Monitoring 폴더**에서 시스템/ GPU를 각각 모니터링 가능  
+- NVIDIA DCGM Exporter 기반 GPU 메트릭 실시간 시각화  
+- Node Exporter 기반 시스템 전체 OS 레벨 모니터링 가능  
